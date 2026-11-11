@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecallMe | Personal Memory Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i data-lucide="brain"></i>
+            </div>
+            <div>
+                <h2>Recall<span>Me.</span></h2>
+                <small>YOUR PERSONAL MEMORY SPACE</small>
+            </div>
+        </div>
+
+        <div class="menu-label">WORKSPACE</div>
+
+        <nav>
+            <button class="nav-item active" data-view="all">
+                <i data-lucide="layout-dashboard"></i>
+                All Memories
+                <span class="nav-count" id="totalCount">0</span>
+            </button>
+
+            <button class="nav-item" data-view="pinned">
+                <i data-lucide="bookmark"></i>
+                Pinned Memories
+            </button>
+
+            <button class="nav-item" data-view="timeline">
+                <i data-lucide="history"></i>
+                Memory Timeline
+            </button>
+        </nav>
+
+        <div class="menu-label">CATEGORIES</div>
+
+        <nav>
+            <button class="nav-item category-link" data-category="Personal">
+                <span class="dot purple"></span> Personal
+            </button>
+
+            <button class="nav-item category-link" data-category="College">
+                <span class="dot blue"></span> College
+            </button>
+
+            <button class="nav-item category-link" data-category="Tasks">
+                <span class="dot orange"></span> Tasks
+            </button>
+
+            <button class="nav-item category-link" data-category="Important">
+                <span class="dot green"></span> Important
+            </button>
+
+            <button class="nav-item category-link" data-category="Other">
+                <span class="dot pink"></span> Other
+            </button>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-note">
+                <i data-lucide="lightbulb"></i>
+                <p>Your mind is for having ideas, not holding them.</p>
+            </div>
+            <small>RECALLME © 2026</small>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <p class="greeting">YOUR PERSONAL MEMORY ASSISTANT</p>
+                <h1 id="pageTitle">Your Memory Space</h1>
+                <p class="subtitle">Everything important, in one place.</p>
+            </div>
+
+            <button class="add-button" onclick="openModal()">
+                <i data-lucide="plus"></i>
+                Add Memory
+            </button>
+
+        </header>
+
+
+        <!-- SEARCH -->
+        <section class="search-section">
+
+            <div class="search-box">
+                <i data-lucide="search"></i>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search memories, keywords, people or context..."
+                >
+                <span class="search-shortcut">SEARCH</span>
+            </div>
+
+        </section>
+
+
+        <!-- STATISTICS -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-icon purple-bg">
+                    <i data-lucide="brain"></i>
+                </div>
+                <div>
+                    <p>Total Memories</p>
+                    <h2 id="statTotal">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon blue-bg">
+                    <i data-lucide="calendar-clock"></i>
+                </div>
+                <div>
+                    <p>Upcoming</p>
+                    <h2 id="statUpcoming">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon orange-bg">
+                    <i data-lucide="alert-circle"></i>
+                </div>
+                <div>
+                    <p>Overdue</p>
+                    <h2 id="statOverdue">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green-bg">
+                    <i data-lucide="check-circle"></i>
+                </div>
+                <div>
+                    <p>Completed</p>
+                    <h2 id="statCompleted">0</h2>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- MEMORY OF THE DAY -->
+        <section class="daily-memory">
+
+            <div class="daily-content">
+                <div class="daily-label">
+                    <i data-lucide="sparkles"></i>
+                    MEMORY OF THE DAY
+                </div>
+
+                <h2 id="dailyTitle">A little reminder from your past.</h2>
+
+                <p id="dailyDescription">
+                    Your saved memories deserve to be revisited.
+                </p>
+
+                <button onclick="showDailyMemory()" class="daily-button">
+                    Rediscover Memory
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="daily-art">
+                <i data-lucide="book-heart"></i>
+            </div>
+
+        </section>
+
+
+        <!-- REMINDERS -->
+        <section class="reminder-section">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">STAY ON TRACK</p>
+                    <h2>Reminder Overview</h2>
+                </div>
+                <span class="live-label">LIVE OVERVIEW</span>
+            </div>
+
+            <div id="reminderList" class="reminder-list">
+                <p class="empty-small">No pending reminders.</p>
+            </div>
+
+        </section>
+
+
+        <!-- MEMORIES -->
+        <section class="memory-section">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">YOUR COLLECTION</p>
+                    <h2 id="memoryHeading">All Memories</h2>
+                </div>
+
+                <select id="sortSelect">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="alphabetical">A - Z</option>
+                </select>
+            </div>
+
+
+            <div class="filter-row">
+
+                <button class="filter-btn active" data-filter="All">
+                    All
+                </button>
+
+                <button class="filter-btn" data-filter="Personal">
+                    Personal
+                </button>
+
+                <button class="filter-btn" data-filter="College">
+                    College
+                </button>
+
+                <button class="filter-btn" data-filter="Tasks">
+                    Tasks
+                </button>
+
+                <button class="filter-btn" data-filter="Important">
+                    Important
+                </button>
+
+                <button class="filter-btn" data-filter="Other">
+                    Other
+                </button>
+
+            </div>
+
+
+            <div id="memoryGrid" class="memory-grid">
+
+                <div class="empty-state">
+                    <i data-lucide="notebook-pen"></i>
+                    <h3>Your memory space is waiting!</h3>
+                    <p>Add your first memory to get started.</p>
+                    <button onclick="openModal()">Create First Memory</button>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+            <p>RecallMe — Remember Less. Recall More.</p>
+            <span>Made to keep your thoughts organised.</span>
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- ADD / EDIT MEMORY MODAL -->
+
+<div class="modal-overlay" id="memoryModal">
+
+    <div class="modal">
+
+        <div class="modal-heading">
+            <div>
+                <p class="eyebrow">YOUR PERSONAL SPACE</p>
+                <h2 id="modalTitle">Create a Memory</h2>
+            </div>
+
+            <button class="close-btn" onclick="closeModal()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+
+        <form id="memoryForm">
+
+            <input type="hidden" id="editId">
+
+            <label>Memory Title *</label>
+            <input
+                type="text"
+                id="memoryTitle"
+                placeholder="What do you want to remember?"
+                required
+            >
+
+            <label>Description *</label>
+            <textarea
+                id="memoryDescription"
+                placeholder="Write down the important details..."
+                required
+            ></textarea>
+
+            <div class="form-row">
+
+                <div>
+                    <label>Category</label>
+                    <select id="memoryCategory">
+                        <option>Personal</option>
+                        <option>College</option>
+                        <option>Tasks</option>
+                        <option>Important</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Reminder Date</label>
+                    <input type="date" id="memoryDate">
+                </div>
+
+            </div>
+
+
+            <label>Related Person / Subject</label>
+            <input
+                type="text"
+                id="memoryPerson"
+                placeholder="Example: Project guide, friend..."
+            >
+
+            <label>Context / Where it matters</label>
+            <input
+                type="text"
+                id="memoryContext"
+                placeholder="Example: College, meeting, personal..."
+            >
+
+            <label>Recall Keywords</label>
+            <input
+                type="text"
+                id="memoryKeywords"
+                placeholder="Example: CAP, report, submission"
+            >
+
+            <p class="form-hint">
+                Add keywords to make your memories easier to find.
+            </p>
+
+            <div class="modal-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal()">
+                    Cancel
+                </button>
+
+                <button type="submit" class="save-btn">
+                    <i data-lucide="save"></i>
+                    Save Memory
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- MEMORY DETAILS MODAL -->
+
+<div class="modal-overlay" id="detailsModal">
+
+    <div class="modal details-modal">
+
+        <div class="modal-heading">
+            <div>
+                <p class="eyebrow">MEMORY DETAILS</p>
+                <h2 id="detailTitle"></h2>
+            </div>
+
+            <button class="close-btn" onclick="closeDetails()">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+
+        <div id="detailContent"></div>
+
+        <div class="modal-actions">
+            <button class="cancel-btn" onclick="closeDetails()">
+                Close
+            </button>
+            <button class="save-btn" id="detailEditBtn">
+                Edit Memory
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
